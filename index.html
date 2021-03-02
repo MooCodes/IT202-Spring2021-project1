@@ -8,5 +8,11 @@
 </head>
 <body>
     <p>Some content</p>
+
+    <script>
+        fetch('https://data.cityofchicago.org/resource/aksk-kvfp.json?property_status=Owned by City&managing_organization=None')
+                .then(response => response.json())
+                .then(data => console.log(data));
+    </script>
 </body>
 </html>
