@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>City Owned Land Inventory Data</title>
+
     <style>
         #home {
             padding-top: 5em;
@@ -18,7 +20,13 @@
             width: 50%;
             display: inline-block;
         }
-        #search-btn {
+        .row {
+            margin-bottom: 2em;
+        }
+        #content {
+            margin-top: 2em;
+        }
+        #about {
             margin-top: 2em;
         }
     </style>
@@ -26,7 +34,7 @@
 <body>
     <!--navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Website Name</a>
+        <a class="navbar-brand" href="#">Filter Through City-Owned Land Inventory Data</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -34,10 +42,16 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="#home">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About Us</a>
+                    <a class="nav-link" href="#search">Search</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#content">Search Results</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">About Us</a>
                 </li>
             </ul>
         </div>
@@ -61,35 +75,166 @@
             <form id="searchForm">
                 <div class="row">
                     <div class="col">
-                        <input id="id" type="text" class="form-control" placeholder="id">
+                        <input id="id" type="text" class="form-control" placeholder="ID">
                     </div>
                     <div class="col">
-                        <input id="pin" type="text" class="form-control" placeholder="pin">
+                        <input id="pin" type="text" class="form-control" placeholder="Pin">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <input id="address" type="text" class="form-control" placeholder="Address">
+                    </div>
+                    <div class="col">
+                        <input id="managing_organization" type="text" class="form-control" placeholder="Managing Organization">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <input id="property_status" type="text" class="form-control" placeholder="Property Status">
+                    </div>
+                    <div class="col">
+                        <input id="date_of_acquisition" type="text" class="form-control" placeholder="Date of Acquisition">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <input id="sq_ft" type="text" class="form-control" placeholder="Sq. Ft">
+                    </div>
+                    <div class="col">
+                        <input id="ward" type="text" class="form-control" placeholder="Ward">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <input id="community_area_number" type="text" class="form-control" placeholder="Community Area #">
+                    </div>
+                    <div class="col">
+                        <input id="community_area_name" type="text" class="form-control" placeholder="Community Area Name">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <input id="zoning_classification" type="text" class="form-control" placeholder="Zoning Classification">
+                    </div>
+                    <div class="col">
+                        <input id="zip_code" type="text" class="form-control" placeholder="Zip Code">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <input id="x_coordinate" type="text" class="form-control" placeholder="X Coordinate">
+                    </div>
+                    <div class="col">
+                        <input id="y_coordinate" type="text" class="form-control" placeholder="Y Coordinate">
                     </div>
                 </div>
                 <button type="button" id="search-btn" class="btn btn-primary">Search</button>
             </form>
         </div>
-    
     </div>
 
+    <div id="content" class="container">
+        <h1 class="text-center">Search Results</h1>
+    </div>
+
+    <div id="about" class="container">
+        <h1 class="text-center">About Us</h1>
+        <p class="text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate similique aliquam fugit architecto asperiores, dolor tempore molestiae enim atque nulla eligendi magni cum reiciendis voluptatibus. Adipisci consequuntur harum voluptatem quam.</p>
+    </div>
 
     <script>
-        fetch('https://data.cityofchicago.org/resource/aksk-kvfp.json?property_status=Owned by City&managing_organization=None')
-                .then(response => response.json())
-                .then(data => console.log(data));
-
         let submitBtn = document.querySelector("#search-btn")
+        let contentDiv = document.querySelector("#content")
         submitBtn.addEventListener("click", () => {
             console.log('clicked!')
 
-            // get the values in the form
-            let id = document.querySelector("#id")
-            console.log(id.value)
+            let idsForButtons = [
+                "id",
+                "pin",
+                "address",
+                "managing_organization",
+                "property_status",
+                "date_of_acquisition",
+                "sq_ft",
+                "ward",
+                "community_area_number",
+                "community_area_name",
+                "zoning_classification",
+                "zip_code",
+                "x_coordinate",
+                "y_coordinate"
+            ]
 
-            // empty id
-            if (id.value === "")
-                console.log("blank")
+            let query = "https://data.cityofchicago.org/resource/aksk-kvfp.json"
+
+            let firstField = true
+
+            // get the values in the form
+            for (let i = 0; i < idsForButtons.length; i++) {
+                let inputField = document.querySelector("#" + idsForButtons[i])
+                console.log(inputField)
+
+                // initial query field
+                if (firstField && inputField.value !== "") {
+                    query += "?" + idsForButtons[i] + "=" + inputField.value
+                    firstField = false
+                } else if (!firstField && inputField.value !== "") { // additional queries
+                    query += "&" + idsForButtons[i] + "=" + inputField.value
+                }
+            }
+
+            console.log(query)
+            fetch(query)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.length)
+
+                    let limit = 5
+
+                    // for each result, build a card for it and add it to the dom
+                    for (let i = 0; i < data.length; i++) {
+                        if (i > 10) break; // limit of 10 cards at most
+
+                        // create row div
+                        let rowDiv = document.createElement("div")
+                        rowDiv.className = "row"
+                        contentDiv.appendChild(rowDiv)
+
+                        // create card div
+                        let cardDiv = document.createElement("div")
+                        cardDiv.className = "card mx-auto"
+                        cardDiv.style = "width: 18rem;"
+                        rowDiv.appendChild(cardDiv)
+
+                        // create ul
+                        let ulDiv = document.createElement("ul")
+                        ulDiv.className = "list-group list-group-flush"
+                        cardDiv.appendChild(ulDiv)
+
+                        //create li's
+                        for (let j = 0; j < idsForButtons.length; j++) {
+                            let li = document.createElement("li")
+                            li.className = "list-group-item"
+                            li.innerHTML = `${idsForButtons[j]} : ${data[i][idsForButtons[j]]}`
+                            ulDiv.appendChild(li)
+                        }
+
+                        // id LI
+                        // let idLi = document.createElement("li")
+                        // idLi.className = "list-group-item"
+                        // idLi.innerHTML = "id: " + data[i]["id"]
+                        // ulDiv.appendChild(idLi)
+                    }
+                });
+
+            // let id = document.querySelector("#id")
+            // let pin = document.querySelector("#pin")
+            // console.log(id.value)
+
+            // // empty id
+            // if (id.value === "")
+            //     console.log("blank")
 
         })
     </script>
